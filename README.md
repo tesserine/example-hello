@@ -8,13 +8,51 @@ A minimal, deliberately trivial repository for exercising the Tesserine agent ec
 
 ## Usage
 
-Configure an agentd profile to clone this repo and deliver a request artifact into the session workspace. The exact injection mechanism is profile-dependent; see [agentd's documentation](https://github.com/tesserine/agentd) for profile configuration.
+This is the canonical integration request, as named by
+[commons ECOSYSTEM-RELEASE.md](https://github.com/tesserine/commons/blob/main/ECOSYSTEM-RELEASE.md):
+**add a `greet(name)` function**.
 
-Clone URL:
+1. Add this agent to your `agentd.toml` (adjust `base_image`,
+   `methodology_dir`, and the credential source to your host; full config
+   reference: [agentd README](https://github.com/tesserine/agentd#configuration)):
 
-```
-https://github.com/tesserine/example-hello
-```
+   ```toml
+   [[agents]]
+   name = "site-builder"
+   base_image = "localhost/tesserine/base"
+   methodology_dir = "../groundwork"
+   repo = "https://github.com/tesserine/example-hello"
+
+   [agents.command]
+   argv = ["claude", "-p", "--dangerously-skip-permissions"]
+
+   [[agents.credentials]]
+   name = "ANTHROPIC_API_KEY"
+   source = "AGENTD_ANTHROPIC_KEY"
+   ```
+
+2. With the daemon running, trigger the smoke-test session:
+
+   ```sh
+   agentd run site-builder --request 'add a `greet(name)` function'
+   ```
+
+## Pass criteria
+
+The stack is operational when all of the following hold:
+
+- `agentd run` reports outcome `success` (exit code `0` — see
+  [commons EXIT-CODES.md](https://github.com/tesserine/commons/blob/main/EXIT-CODES.md)).
+- A sealed audit record exists for the session
+  (`<audit_root>/site-builder/<session_id>/` with `outcome` populated in
+  `agentd/session.json` — format:
+  [agentd audit-record reference](https://github.com/tesserine/agentd/blob/main/docs/audit-record.md)).
+- The session's branch or PR on this repo adds a working `greet(name)` to
+  `hello.py`.
+
+Any other outcome label, an unsealed record, or a session that stops
+blocked mid-protocol is a failed smoke test; diagnose from the audit
+record.
 
 ## Scope
 
