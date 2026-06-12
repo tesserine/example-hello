@@ -1,6 +1,17 @@
 # example-hello
 
-A minimal, deliberately trivial repository for exercising the Tesserine agent ecosystem. Point an [agentd](https://github.com/tesserine/agentd) session at this repo's clone URL to verify that the stack — agentd, [runa](https://github.com/tesserine/runa), [groundwork](https://github.com/tesserine/groundwork), and the [base](https://github.com/tesserine/base) image — lights up end-to-end.
+**The whole stack proves itself with one request.**
+
+A minimal, deliberately trivial repository for exercising the
+[Tesserine](https://github.com/tesserine) agent ecosystem. Point an
+[agentd](https://github.com/tesserine/agentd) session at this repo's clone URL
+and the entire trust chain demonstrates itself end-to-end: agentd isolates the
+session, the [base](https://github.com/tesserine/base) image supplies the
+verified runtime, [runa](https://github.com/tesserine/runa) enforces the
+[groundwork](https://github.com/tesserine/groundwork) methodology
+artifact-by-artifact, and a sealed audit record proves what happened. This is
+the ecosystem's canonical integration fixture (ecosystem map:
+[commons SOURCE-OF-TRUTH.md](https://github.com/tesserine/commons/blob/main/SOURCE-OF-TRUTH.md)).
 
 ## Contents
 
